@@ -37,7 +37,6 @@ function switchTab(tabName) {
     document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
     
     document.getElementById(`view-${tabName}`).classList.add('active');
-    // Set active icon
     const navIndex = ['home', 'search', 'library'].indexOf(tabName);
     document.querySelectorAll('.nav-item')[navIndex].classList.add('active');
 }
@@ -62,7 +61,7 @@ async function performSearch(query) {
     searchResults.innerHTML = '';
     
     try {
-        // Mode: SEARCH (Hanya ambil list)
+        // Mode: SEARCH (Hanya ambil list JSON)
         const res = await fetch(`/api/index?url=${encodeURIComponent(query)}&mode=search`);
         const data = await res.json();
         
@@ -80,8 +79,15 @@ async function performSearch(query) {
                     </div>
                     <i class="fa-solid fa-play" style="color:var(--green)"></i>
                 `;
-                // Saat diklik, panggil endpoint PLAY dengan URL spesifik lagu tersebut
-                item.onclick = () => playMusic(song.url);
+                
+                // PERBAIKAN: Kirim object lengkap agar UI update instan
+                item.onclick = () => playMusic({
+                    url: song.url,
+                    title: song.title,
+                    artist: song.artist,
+                    cover: song.thumbnail
+                });
+                
                 searchResults.appendChild(item);
             });
         } else {
@@ -93,31 +99,34 @@ async function performSearch(query) {
     }
 }
 
-// --- PLAYER LOGIC ---
-async function playMusic(url) {
-    // Tampilkan loading di mini player
-    document.getElementById('mini-title').innerText = "Loading...";
+// --- PLAYER LOGIC (FIXED) ---
+async function playMusic(songData) {
+    // 1. Update UI Langsung (Optimistic UI)
+    currentMeta = songData;
+    updateUI(currentMeta);
     
+    // Tampilkan loading spinner di tombol play mini player
+    document.getElementById('mini-play-btn').className = 'fa-solid fa-spinner fa-spin';
+
     try {
-        // Mode: PLAY (Download audio)
-        const res = await fetch(`/api/index?url=${encodeURIComponent(url)}&mode=play`);
-        const data = await res.json();
-
-        if (data.error) throw new Error(data.error);
-
-        // Setup Audio
-        audio.src = data.audio;
-        currentMeta = data.metadata;
+        // 2. Direct Stream: Pasang URL Backend langsung ke Audio Source
+        // Mode 'stream' akan memicu piping di backend
+        const streamUrl = `/api/index?url=${encodeURIComponent(songData.url)}&mode=stream`;
         
-        updateUI(currentMeta);
+        audio.src = streamUrl;
+        audio.preload = "auto";
         
-        audio.play().then(() => {
-            isPlaying = true;
-            updatePlayIcons();
-        });
+        // Memulai pemutaran
+        await audio.play();
+        
+        isPlaying = true;
+        updatePlayIcons(); // Spinner akan hilang di sini
 
     } catch (e) {
-        alert("Gagal memutar: " + e.message);
+        console.error(e);
+        // Jika gagal autoplay (kebijakan browser), set UI ke pause
+        isPlaying = false;
+        updatePlayIcons();
     }
 }
 
@@ -169,7 +178,17 @@ function updatePlayIcons() {
     }
 }
 
-// Progress Bar
+// Progress Bar & Loading Handler
+audio.addEventListener('waiting', () => {
+    // Tampilkan spinner saat buffering
+    document.getElementById('mini-play-btn').className = 'fa-solid fa-spinner fa-spin';
+});
+
+audio.addEventListener('playing', () => {
+    // Kembalikan ke tombol pause saat mulai main
+    updatePlayIcons();
+});
+
 audio.addEventListener('timeupdate', () => {
     if (!audio.duration) return;
     const pct = (audio.currentTime / audio.duration) * 100;
@@ -233,7 +252,8 @@ function loadLibrary() {
             </div>
             <i class="fa-solid fa-play" style="color:var(--gray)"></i>
         `;
-        item.onclick = () => playMusic(song.url);
+        // Gunakan struktur yang sama dengan search
+        item.onclick = () => playMusic(song);
         libraryList.appendChild(item);
     });
 }
