@@ -11,36 +11,38 @@ async function spotify(req, res, input, mode) {
     try {
         if (!input) throw new Error('Input is required.');
 
-        // --- MODE SEARCH (Hanya Metadata) ---
+        // 1. Ambil Metadata (Digunakan untuk Search maupun Play)
+        // Kita perlu data ini di kedua mode, jadi request ini wajib.
+        const { data: s } = await axios.get(`https://spotdown.org/api/song-details?url=${encodeURIComponent(input)}`, { headers: HEADERS });
+        
+        if (!s.songs || s.songs.length === 0) {
+            throw new Error('Track not found.');
+        }
+
+        // --- MODE SEARCH (Hanya List Lagu) ---
         if (mode === 'search') {
-            const { data: s } = await axios.get(`https://spotdown.org/api/song-details?url=${encodeURIComponent(input)}`, { headers: HEADERS });
-            
             return res.status(200).json({
                 type: 'list',
                 songs: s.songs 
             });
         }
 
-        // --- MODE STREAM (Langsung Audio) ---
-        // Backend bertindak sebagai proxy stream
-        if (mode === 'stream') {
-            // 1. Dapatkan detail lagu untuk mengambil URL download internal
-            const { data: s } = await axios.get(`https://spotdown.org/api/song-details?url=${encodeURIComponent(input)}`, { headers: HEADERS });
+        // --- MODE PLAY (Metadata + URL) ---
+        // Backend ringan: Tidak download, hanya parsing data.
+        if (mode === 'play') {
             const song = s.songs[0];
             
-            if (!song) throw new Error('Track not found.');
-
-            // 2. Request Stream Audio dari Provider
-            const response = await axios.post('https://spotdown.org/api/download', {
-                url: song.url
-            }, {
-                headers: HEADERS,
-                responseType: 'stream' // PENTING: Jangan buffer, tapi stream
+            return res.status(200).json({
+                type: 'play',
+                metadata: {
+                    title: song.title,
+                    artist: song.artist,
+                    duration: song.duration,
+                    cover: song.cover || song.thumbnail // Fallback jika nama field berbeda
+                },
+                // Mengembalikan URL dari spotdown agar client yang melakukan handling audio
+                play_url: song.url 
             });
-
-            // 3. Teruskan stream langsung ke Frontend
-            res.setHeader('Content-Type', 'audio/mpeg');
-            response.data.pipe(res);
         }
 
     } catch (error) {
@@ -51,12 +53,14 @@ async function spotify(req, res, input, mode) {
 };
 
 module.exports = async (req, res) => {
+    // --- CORS & METHODS ---
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
     
     if (req.method === 'OPTIONS') return res.status(200).end();
 
-    const { url, mode } = req.query; // mode: 'search' atau 'stream'
+    // --- PARSING QUERY ---
+    const { url, mode } = req.query; // mode: 'search' atau 'play'
 
     if (!url) return res.status(400).json({ error: 'URL is required' });
 
