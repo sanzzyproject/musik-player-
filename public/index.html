@@ -10,29 +10,120 @@
 <body>
 
     <div id="view-home" class="page-view active">
-        <div class="top-bar">
-            <h2>Welcome Everyone</h2>
-            <div class="dev-badge">DEV SANN404</div>
+        
+        <div class="home-header">
+            <div class="header-text">
+                <span class="greeting">DEV SANN404</span>
+                <h2 class="username">Music Lover</h2>
+            </div>
+            <div class="header-icons">
+                <i class="fa-regular fa-bell"></i>
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                <i class="fa-solid fa-gear"></i>
+            </div>
         </div>
-        <div class="section-title">Made for You</div>
+
+        <div class="category-chips">
+            <span class="cat-chip active">Music</span>
+            <span class="cat-chip">Podcasts</span>
+            <span class="cat-chip">Live Events</span>
+            <span class="cat-chip">Made For You</span>
+        </div>
+
+        <div class="quick-grid">
+            <div class="quick-card" onclick="quickSearch('Liked Songs')">
+                <div class="qc-img"><i class="fa-solid fa-heart"></i></div>
+                <span>Liked Songs</span>
+            </div>
+            <div class="quick-card" onclick="quickSearch('On Repeat')">
+                <img src="https://i.scdn.co/image/ab67616d0000b2736b04882e73d3278297600868" alt="">
+                <span>On Repeat</span>
+            </div>
+            <div class="quick-card" onclick="quickSearch('Top 50 Indonesia')">
+                <img src="https://charts-images.scdn.co/assets/locale_en/regional/daily/region_id.jpg" alt="">
+                <span>Top 50 Indo</span>
+            </div>
+            <div class="quick-card" onclick="quickSearch('Lofi Beats')">
+                <img src="https://i.scdn.co/image/ab67616d0000b273d2a3381e4b335349e5d79905" alt="">
+                <span>Lofi Beats</span>
+            </div>
+            <div class="quick-card" onclick="quickSearch('Rock Classics')">
+                <img src="https://i.scdn.co/image/ab67616d0000b27376044772183c0702a9b3a042" alt="">
+                <span>Rock Classics</span>
+            </div>
+            <div class="quick-card" onclick="quickSearch('New Music Friday')">
+                <img src="https://i.scdn.co/image/ab67616d0000b273ca8a164a69e46a798547372b" alt="">
+                <span>New Release</span>
+            </div>
+        </div>
+
+        <div class="section-title">Featured Today</div>
+        <div class="hero-banner" onclick="quickSearch('Mahalini Sial')">
+            <div class="hero-content">
+                <span class="tag">NEW ALBUM</span>
+                <h1>Mahalini</h1>
+                <p>Dengarkan hits terbaru "Sial" dan lainnya.</p>
+            </div>
+            <img src="https://i.scdn.co/image/ab6761610000e5eb708779b5c54583152c1e7246" alt="Hero">
+        </div>
+
+        <div class="section-title">Jump Back In</div>
         <div class="card-scroll">
-            <div class="card" onclick="quickSearch('Top Hits Indonesia')">
-                <img src="https://cdn.odzre.my.id/db9.jpg" alt="">
-                <p>Top Hits Indo</p>
+            <div class="card" onclick="quickSearch('Sheila On 7')">
+                <img src="https://i.scdn.co/image/ab6761610000e5eb3199c4c47551042730df5326" alt="">
+                <p>Sheila On 7</p>
+                <span class="subtext">Legendary Band</span>
             </div>
-            <div class="card" onclick="quickSearch('Lofi Study')">
-                <img src="https://cdn.odzre.my.id/6cy.jpg" alt="">
-                <p>Lofi Study</p>
+            <div class="card" onclick="quickSearch('Dewa 19')">
+                <img src="https://i.scdn.co/image/ab6761610000e5eb345d81299c855a4072cb0385" alt="">
+                <p>Dewa 19</p>
+                <span class="subtext">Best of 90s</span>
             </div>
-            <div class="card" onclick="quickSearch('J-Pop Popular')">
+            <div class="card" onclick="quickSearch('Nadin Amizah')">
+                <img src="https://i.scdn.co/image/ab6761610000e5ebc52536c0d8f6d6f5195dfa68" alt="">
+                <p>Nadin Amizah</p>
+                <span class="subtext">Indie Folk</span>
+            </div>
+            <div class="card" onclick="quickSearch('Hindia')">
+                <img src="https://i.scdn.co/image/ab6761610000e5ebc3b10b8850689b9d19d690a7" alt="">
+                <p>Hindia</p>
+                <span class="subtext">Alternative</span>
+            </div>
+            <div class="card" onclick="quickSearch('J-Pop Hits')">
                 <img src="https://cdn.odzre.my.id/f90.jpg" alt="">
                 <p>J-Pop Hits</p>
+                <span class="subtext">Anime & Pop</span>
+            </div>
+        </div>
+
+        <div class="section-title">Your Favorite Artists</div>
+        <div class="card-scroll artist-scroll">
+            <div class="artist-circle" onclick="quickSearch('Tulus')">
+                <img src="https://i.scdn.co/image/ab6761610000e5eb3e6d2483d2a704d9b4394042" alt="">
+                <p>Tulus</p>
+            </div>
+            <div class="artist-circle" onclick="quickSearch('Tiara Andini')">
+                <img src="https://i.scdn.co/image/ab6761610000e5ebf5d60144c1d42a69074092b3" alt="">
+                <p>Tiara</p>
+            </div>
+            <div class="artist-circle" onclick="quickSearch('Last Child')">
+                <img src="https://i.scdn.co/image/ab6761610000e5ebd744483863a948e47f5d9434" alt="">
+                <p>Last Child</p>
+            </div>
+            <div class="artist-circle" onclick="quickSearch('Bruno Mars')">
+                <img src="https://i.scdn.co/image/ab6761610000e5eb73599932170c0c7b2a92636a" alt="">
+                <p>Bruno</p>
+            </div>
+            <div class="artist-circle" onclick="quickSearch('Coldplay')">
+                <img src="https://i.scdn.co/image/ab6761610000e5eb989ed05e1f0570cc4726c2d3" alt="">
+                <p>Coldplay</p>
             </div>
         </div>
         
-        <div class="section-title">Trending Now</div>
-        <div class="list-vertical" id="home-recommendations">
+        <div class="section-title">Recommended for You</div>
+        <div id="home-recommendations" class="list-vertical">
             </div>
+
     </div>
 
     <div id="view-search" class="page-view">
@@ -40,7 +131,7 @@
             <h1>Search</h1>
             <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="searchInput" placeholder="Artists, songs, or podcasts">
+                <input type="text" id="searchInput" placeholder="What do you want to listen to?">
             </div>
         </div>
         
@@ -49,20 +140,29 @@
         </div>
 
         <div id="search-results" class="result-list">
-            <div class="placeholder-text">Cari lagu favoritmu...</div>
+            <div class="placeholder-container">
+                <i class="fa-solid fa-music"></i>
+                <p>Play what you love</p>
+                <span>Search for artists, songs, podcasts, and more.</span>
+            </div>
         </div>
     </div>
 
     <div id="view-library" class="page-view">
         <div class="top-bar">
-            <h2>Your Library</h2>
+            <div class="lib-header">
+                <div class="user-avatar">S</div>
+                <h2>Your Library</h2>
+            </div>
+            <i class="fa-solid fa-plus add-lib"></i>
         </div>
         <div class="filter-chips">
             <span class="chip active">Playlists</span>
             <span class="chip">Artists</span>
+            <span class="chip">Albums</span>
         </div>
         <div id="library-list" class="result-list">
-            </div>
+        </div>
     </div>
 
     <div class="bottom-player" id="bottom-player">
@@ -118,11 +218,13 @@
             </div>
         </div>
         <div class="full-controls">
+            <i class="fa-solid fa-shuffle" style="font-size: 20px; color: var(--green);"></i>
             <i class="fa-solid fa-backward-step"></i>
             <div class="play-circle" onclick="togglePlay()">
                 <i class="fa-solid fa-play" id="full-play-icon"></i>
             </div>
             <i class="fa-solid fa-forward-step"></i>
+            <i class="fa-solid fa-repeat" style="font-size: 20px; color: var(--gray);"></i>
         </div>
         <div class="dev-credit">Developer: SANN404 FORUM</div>
     </div>
