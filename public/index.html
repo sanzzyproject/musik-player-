@@ -2,76 +2,129 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spotify Vercel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Spotify SANN404</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <div class="sidebar">
-            <div class="logo">
-                <i class="fa-brands fa-spotify"></i> Spotify
+
+    <div id="view-home" class="page-view active">
+        <div class="top-bar">
+            <h2>Good Morning</h2>
+            <div class="dev-badge">SANN404 FORUM</div>
+        </div>
+        <div class="section-title">Made for You</div>
+        <div class="card-scroll">
+            <div class="card" onclick="quickSearch('Top Hits Indonesia')">
+                <img src="https://i.scdn.co/image/ab67706f00000002164a6a003dfa539b61d33115" alt="">
+                <p>Top Hits Indo</p>
             </div>
-            <ul>
-                <li><a href="#" class="active"><i class="fa-solid fa-house"></i> Home</a></li>
-                <li><a href="#"><i class="fa-solid fa-magnifying-glass"></i> Search</a></li>
-            </ul>
-            <div class="playlist-header">
-                <p>MY PLAYLIST</p>
-                <div id="playlist-container"></div>
+            <div class="card" onclick="quickSearch('Lofi Study')">
+                <img src="https://i.scdn.co/image/ab67616d0000b27341e065df0526019b884d5929" alt="">
+                <p>Lofi Study</p>
+            </div>
+            <div class="card" onclick="quickSearch('J-Pop Popular')">
+                <img src="https://i.scdn.co/image/ab67616d0000b273575c32463765e94b41302821" alt="">
+                <p>J-Pop Hits</p>
             </div>
         </div>
-
-        <div class="main-content">
-            <div class="header">
-                <div class="search-bar">
-                    <input type="text" id="searchInput" placeholder="Cari Lagu atau Link Spotify...">
-                    <button onclick="fetchMusic()">Play</button>
-                </div>
+        
+        <div class="section-title">Trending Now</div>
+        <div class="list-vertical" id="home-recommendations">
             </div>
+    </div>
 
-            <div class="content-area">
-                <h2>Now Playing</h2>
-                <div id="loading" style="display: none;">
-                    <div class="spinner"></div> Mengunduh & Memproses... (Tunggu ya)
-                </div>
-                <div class="song-card" id="current-song-card" style="display: none;">
-                    <img id="main-cover" src="" alt="Album Art">
-                    <h3 id="main-title">Song Title</h3>
-                    <p id="main-artist">Artist Name</p>
-                </div>
+    <div id="view-search" class="page-view">
+        <div class="search-header">
+            <h1>Search</h1>
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" placeholder="Artists, songs, or podcasts">
+            </div>
+        </div>
+        
+        <div id="search-loading" class="loading-state" style="display: none;">
+            <div class="spinner"></div> Mencari...
+        </div>
+
+        <div id="search-results" class="result-list">
+            <div class="placeholder-text">Cari lagu favoritmu...</div>
+        </div>
+    </div>
+
+    <div id="view-library" class="page-view">
+        <div class="top-bar">
+            <h2>Your Library</h2>
+        </div>
+        <div class="filter-chips">
+            <span class="chip active">Playlists</span>
+            <span class="chip">Artists</span>
+        </div>
+        <div id="library-list" class="result-list">
+            </div>
+    </div>
+
+    <div class="bottom-player" id="bottom-player">
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="mini-progress"></div>
+        </div>
+        <div class="player-content">
+            <img id="mini-cover" src="https://via.placeholder.com/50" alt="cover">
+            <div class="mini-info">
+                <h4 id="mini-title">Not Playing</h4>
+                <p id="mini-artist">SANN404 FORUM</p>
+            </div>
+            <div class="mini-controls">
+                <i class="fa-solid fa-play" id="mini-play-btn" onclick="togglePlay()"></i>
             </div>
         </div>
     </div>
 
-    <div class="player">
-        <div class="player-left">
-            <img id="footer-cover" src="https://via.placeholder.com/50" alt="">
-            <div class="song-info">
-                <h4 id="footer-title">No Song</h4>
-                <p id="footer-artist">-</p>
-            </div>
+    <nav class="navbar">
+        <div class="nav-item active" onclick="switchTab('home')">
+            <i class="fa-solid fa-house"></i>
+            <span>Home</span>
         </div>
-        
-        <div class="player-center">
-            <div class="controls">
-                <i class="fa-solid fa-backward-step"></i>
-                <div class="play-btn" onclick="togglePlay()">
-                    <i id="play-icon" class="fa-solid fa-circle-play"></i>
-                </div>
-                <i class="fa-solid fa-forward-step"></i>
+        <div class="nav-item" onclick="switchTab('search')">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Search</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('library')">
+            <i class="fa-solid fa-book"></i>
+            <span>Library</span>
+        </div>
+    </nav>
+
+    <div id="full-player" class="full-player">
+        <div class="full-header">
+            <i class="fa-solid fa-chevron-down" onclick="closeFullPlayer()"></i>
+            <span>Now Playing</span>
+            <i class="fa-solid fa-ellipsis"></i>
+        </div>
+        <img id="full-cover" src="" alt="">
+        <div class="full-info">
+            <div>
+                <h2 id="full-title">Song Title</h2>
+                <p id="full-artist">Artist</p>
             </div>
-            <div class="progress-container">
+            <i class="fa-regular fa-heart" id="like-btn" onclick="toggleLibrary()"></i>
+        </div>
+        <div class="full-progress">
+            <input type="range" id="main-slider" value="0" max="100">
+            <div class="time">
                 <span id="curr-time">0:00</span>
-                <input type="range" id="progress-bar" value="0" max="100">
                 <span id="total-time">0:00</span>
             </div>
         </div>
-
-        <div class="player-right">
-            <i class="fa-solid fa-volume-high"></i>
+        <div class="full-controls">
+            <i class="fa-solid fa-backward-step"></i>
+            <div class="play-circle" onclick="togglePlay()">
+                <i class="fa-solid fa-play" id="full-play-icon"></i>
+            </div>
+            <i class="fa-solid fa-forward-step"></i>
         </div>
+        <div class="dev-credit">Developer: SANN404 FORUM</div>
     </div>
 
     <audio id="audio-source"></audio>
