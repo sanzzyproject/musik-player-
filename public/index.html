@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Vercel</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">
+                <i class="fa-brands fa-spotify"></i> Spotify
+            </div>
+            <ul>
+                <li><a href="#" class="active"><i class="fa-solid fa-house"></i> Home</a></li>
+                <li><a href="#"><i class="fa-solid fa-magnifying-glass"></i> Search</a></li>
+            </ul>
+            <div class="playlist-header">
+                <p>MY PLAYLIST</p>
+                <div id="playlist-container"></div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="header">
+                <div class="search-bar">
+                    <input type="text" id="searchInput" placeholder="Cari Lagu atau Link Spotify...">
+                    <button onclick="fetchMusic()">Play</button>
+                </div>
+            </div>
+
+            <div class="content-area">
+                <h2>Now Playing</h2>
+                <div id="loading" style="display: none;">
+                    <div class="spinner"></div> Mengunduh & Memproses... (Tunggu ya)
+                </div>
+                <div class="song-card" id="current-song-card" style="display: none;">
+                    <img id="main-cover" src="" alt="Album Art">
+                    <h3 id="main-title">Song Title</h3>
+                    <p id="main-artist">Artist Name</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="player">
+        <div class="player-left">
+            <img id="footer-cover" src="https://via.placeholder.com/50" alt="">
+            <div class="song-info">
+                <h4 id="footer-title">No Song</h4>
+                <p id="footer-artist">-</p>
+            </div>
+        </div>
+        
+        <div class="player-center">
+            <div class="controls">
+                <i class="fa-solid fa-backward-step"></i>
+                <div class="play-btn" onclick="togglePlay()">
+                    <i id="play-icon" class="fa-solid fa-circle-play"></i>
+                </div>
+                <i class="fa-solid fa-forward-step"></i>
+            </div>
+            <div class="progress-container">
+                <span id="curr-time">0:00</span>
+                <input type="range" id="progress-bar" value="0" max="100">
+                <span id="total-time">0:00</span>
+            </div>
+        </div>
+
+        <div class="player-right">
+            <i class="fa-solid fa-volume-high"></i>
+        </div>
+    </div>
+
+    <audio id="audio-source"></audio>
+    <script src="script.js"></script>
+</body>
+</html>
