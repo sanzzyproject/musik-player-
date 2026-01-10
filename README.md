@@ -1,3 +1,13 @@
+---
+
+## 🛠️ Teknologi yang Digunakan
+
+- **Node.js**
+- **JavaScript (Vanilla JS)**
+- **HTML5**
+- **CSS3**
+- **Vercel Serverless Functions**
+
 ## 📁 Struktur Project
 
 api/index.js        → Backend / API music player  
