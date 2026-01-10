@@ -29,3 +29,14 @@ public/style.css    → UI styling and layout
 package.json        → Project configuration & dependencies  
 vercel.json         → Vercel deployment configuration  
 README.md           → Project documentation
+
+
+## 📄 License & Attribution
+
+This project is open-source and free to use under the MIT License  
+**Attribution is required**.
+
+Any use, modification, or redistribution must clearly mention:
+- Original project name
+- Original author
+- Link to the original repository
