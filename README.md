@@ -19,21 +19,13 @@ This project is built using the following technologies:
 ---
 
 ## 📁 Project Structure
-
-free-music-player/
-├── api/                  # Backend / serverless API
-│   └── index.js          # Endpoint utama
-│
-├── public/               # Frontend static assets
-│   ├── index.html        # Halaman utama aplikasi
-│   ├── script.js         # Logic pemutar musik
-│   └── style.css         # Styling UI / layout
-│
-├── LICENSE               # MIT License + Attribution Clause
-├── NOTICE.md             # Optional: credit / attribution instructions
-├── package.json          # Node.js dependencies & scripts
-├── vercel.json           # Vercel deployment config
-└── README.md             # Dokumentasi project
+api/index.js        → Backend / API music player  
+public/index.html   → Tampilan utama aplikasi  
+public/script.js    → Logic pemutar musik  
+public/style.css    → Styling UI  
+package.json        → Konfigurasi project & dependencies  
+vercel.json         → Konfigurasi deployment Vercel  
+README.md           → Dokumentasi project
 
 ## 📄 License & Attribution
 
