@@ -21,26 +21,28 @@ body {
     position: relative;
 }
 
-/* --- PAGE VIEW CONFIG --- */
+/* --- PAGE VIEW CONFIG (Fix Navigation) --- */
 .page-view {
+    position: absolute; /* Ubah ke absolute agar tumpang tindih terkontrol */
+    top: 0; left: 0; width: 100%;
     height: calc(100vh - 130px); 
     overflow-y: auto;
     padding: 20px 16px;
-    display: none;
-    padding-bottom: 100px; /* Space for bottom player */
+    display: none; /* Default hidden */
+    padding-bottom: 100px;
     background: linear-gradient(180deg, #202020 0%, #121212 20%);
+    z-index: 10;
 }
-.page-view.active { display: block; animation: fadeIn 0.4s ease; }
 
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+/* View aktif akan muncul */
+.page-view.active { display: block; animation: fadeIn 0.3s ease; z-index: 20; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
 /* --- HOME: HEADER & CHIPS --- */
 .home-heder {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding-top: 10px;
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 20px; padding-top: 10px;
 }
 .greeting { font-size: 12px; color: var(--gray); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
 .username { font-size: 24px; font-weight: 800; color: white; }
@@ -53,43 +55,22 @@ body {
     scrollbar-width: none;
 }
 .cat-chip {
-    background: rgba(255,255,255,0.1);
-    padding: 8px 20px;
-    border-radius: 30px;
-    font-size: 13px;
-    font-weight: 500;
-    white-space: nowrap;
-    transition: 0.2s;
+    background: rgba(255,255,255,0.1); padding: 8px 20px; border-radius: 30px;
+    font-size: 13px; font-weight: 500; white-space: nowrap; transition: 0.2s;
     border: 1px solid transparent;
 }
 .cat-chip.active { background: var(--green); color: black; font-weight: 700; }
 
-/* --- HOME: QUICK GRID (2 Columns) --- */
-.quick-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 30px;
-}
+/* --- HOME: QUICK GRID --- */
+.quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 30px; }
 .quick-card {
-    background: #2a2a2a;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    height: 56px;
-    cursor: pointer;
-    transition: background 0.2s;
+    background: #2a2a2a; border-radius: 4px; display: flex; align-items: center;
+    overflow: hidden; height: 56px; cursor: pointer; transition: background 0.2s;
     box-shadow: 0 4px 6px rgba(0,0,0,0.2);
 }
 .quick-card:active { background: #404040; }
-.quick-card img, .qc-img {
-    width: 56px; height: 56px; object-fit: cover;
-}
-.qc-img {
-    background: linear-gradient(135deg, #450af5, #c4efd9);
-    display: flex; justify-content: center; align-items: center;
-}
+.quick-card img, .qc-img { width: 56px; height: 56px; object-fit: cover; }
+.qc-img { background: linear-gradient(135deg, #450af5, #c4efd9); display: flex; justify-content: center; align-items: center; }
 .quick-card span {
     font-size: 12px; font-weight: 700; padding: 0 10px; line-height: 1.2;
     display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
@@ -97,25 +78,15 @@ body {
 
 /* --- HOME: HERO BANNER --- */
 .hero-banner {
-    position: relative;
-    width: 100%;
-    height: 180px;
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 30px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.4);
-    cursor: pointer;
+    position: relative; width: 100%; height: 180px; border-radius: 12px;
+    overflow: hidden; margin-bottom: 30px; box-shadow: 0 10px 20px rgba(0,0,0,0.4); cursor: pointer;
 }
-.hero-banner img {
-    width: 100%; height: 100%; object-fit: cover;
-    transition: transform 0.5s;
-}
+.hero-banner img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
 .hero-banner:active img { transform: scale(1.05); }
 .hero-content {
     position: absolute; bottom: 0; left: 0; width: 100%;
     background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
-    padding: 15px;
-    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 15px; display: flex; flex-direction: column; justify-content: flex-end;
 }
 .hero-content .tag { font-size: 10px; font-weight: 800; color: var(--green); letter-spacing: 1px; margin-bottom: 4px; }
 .hero-content h1 { font-size: 28px; font-weight: 800; margin-bottom: 4px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
@@ -123,32 +94,15 @@ body {
 
 /* --- SECTIONS & CARDS --- */
 .section-title { font-size: 20px; font-weight: 700; margin: 0 0 15px 0; letter-spacing: -0.5px; }
-
 .card-scroll { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 15px; scrollbar-width: none; margin-bottom: 20px; }
-.card { 
-    min-width: 140px; width: 140px;
-    background: transparent; 
-    padding: 0; 
-    border-radius: 0;
-    cursor: pointer;
-}
-.card img { 
-    width: 100%; aspect-ratio: 1/1; 
-    border-radius: 8px; margin-bottom: 10px; 
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-}
+.card { min-width: 140px; width: 140px; background: transparent; padding: 0; border-radius: 0; cursor: pointer; }
+.card img { width: 100%; aspect-ratio: 1/1; border-radius: 8px; margin-bottom: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
 .card p { font-size: 14px; font-weight: 700; color: white; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .card .subtext { font-size: 12px; color: var(--gray); font-weight: 500; }
 
 /* --- ARTIST CIRCLE --- */
-.artist-scroll .artist-circle {
-    min-width: 100px;
-    display: flex; flex-direction: column; align-items: center; text-align: center;
-}
-.artist-circle img {
-    width: 100px; height: 100px; border-radius: 50%; object-fit: cover;
-    margin-bottom: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-}
+.artist-scroll .artist-circle { min-width: 100px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.artist-circle img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.4); }
 .artist-circle p { font-size: 13px; font-weight: 600; }
 
 /* --- SEARCH STYLE --- */
@@ -156,25 +110,17 @@ body {
 .search-header h1 { font-size: 32px; font-weight: 800; margin-bottom: 15px; }
 .search-box { 
     background: white; padding: 14px 16px; border-radius: 8px; 
-    display: flex; align-items: center; gap: 12px; 
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 .search-box i { color: black; font-size: 20px; }
 .search-box input { border: none; outline: none; flex: 1; font-size: 16px; font-weight: 600; color: black; }
-
-.placeholder-container {
-    text-align: center; margin-top: 50px; color: var(--gray);
-}
+.placeholder-container { text-align: center; margin-top: 50px; color: var(--gray); }
 .placeholder-container i { font-size: 50px; margin-bottom: 20px; opacity: 0.5; }
 .placeholder-container p { font-size: 18px; font-weight: 700; color: white; margin-bottom: 5px; }
 .placeholder-container span { font-size: 13px; }
 
-/* --- LIST RESULT (Search/Library/Vertical) --- */
-.list-vertical { display: flex; flex-direction: column; gap: 8px; }
-.result-item { 
-    display: flex; align-items: center; gap: 12px; padding: 10px; 
-    border-radius: 6px; background: transparent; transition: 0.2s; 
-}
+/* --- LIST RESULT --- */
+.result-item { display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 6px; background: transparent; transition: 0.2s; }
 .result-item:active { background: rgba(255,255,255,0.1); }
 .result-item img { width: 50px; height: 50px; border-radius: 4px; object-fit: cover; }
 .result-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
@@ -197,12 +143,9 @@ body {
 
 /* --- BOTTOM PLAYER --- */
 .bottom-player {
-    position: fixed; bottom: 65px; left: 8px; right: 8px;
-    height: 64px; background: #353535; border-radius: 8px;
-    display: flex; flex-direction: column; z-index: 100;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.6);
-    overflow: hidden;
-    backdrop-filter: blur(10px);
+    position: fixed; bottom: 65px; left: 8px; right: 8px; height: 64px; background: #353535;
+    border-radius: 8px; display: flex; flex-direction: column; z-index: 100;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.6); overflow: hidden; backdrop-filter: blur(10px);
 }
 .progress-bar-bg { width: 100%; height: 2px; background: rgba(255,255,255,0.2); }
 .progress-bar-fill { height: 100%; background: white; width: 0%; border-radius: 0 2px 2px 0; }
@@ -217,8 +160,7 @@ body {
 .navbar {
     position: fixed; bottom: 0; width: 100%; height: 60px;
     background: linear-gradient(0deg, rgba(0,0,0,1) 10%, rgba(18,18,18,0.95) 100%);
-    display: flex; justify-content: space-around; align-items: center;
-    z-index: 100; padding-bottom: 5px;
+    display: flex; justify-content: space-around; align-items: center; z-index: 100; padding-bottom: 5px;
 }
 .nav-item { display: flex; flex-direction: column; align-items: center; gap: 5px; color: #777; font-size: 10px; font-weight: 500; transition: 0.2s; }
 .nav-item i { font-size: 22px; margin-bottom: 2px; }
@@ -239,7 +181,6 @@ body {
 .full-info h2 { font-size: 22px; margin-bottom: 5px; font-weight: 800; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
 .full-info p { color: var(--gray); font-size: 16px; font-weight: 500; }
 .full-info i { font-size: 26px; cursor: pointer; }
-
 .full-progress input { 
     width: 100%; -webkit-appearance: none; height: 4px; background: rgba(255,255,255,0.3); border-radius: 2px; margin-bottom: 10px; 
 }
@@ -247,18 +188,16 @@ body {
     -webkit-appearance: none; width: 12px; height: 12px; background: white; border-radius: 50%; cursor: pointer;
 }
 .time { display: flex; justify-content: space-between; font-size: 12px; color: var(--gray); font-weight: 500; }
-
 .full-controls { display: flex; justify-content: space-between; align-items: center; margin-top: 30px; font-size: 32px; color: white; }
 .play-circle { 
     width: 70px; height: 70px; background: white; border-radius: 50%; color: black; 
     display: flex; align-items: center; justify-content: center; font-size: 32px; 
-    box-shadow: 0 8px 15px rgba(0,0,0,0.3); 
-    transition: transform 0.1s;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.3); transition: transform 0.1s;
 }
 .play-circle:active { transform: scale(0.95); }
 .dev-credit { margin-top: auto; text-align: center; font-size: 11px; color: #555; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; }
 
-/* --- UPDATE: PLAYLIST DETAIL VIEW --- */
+/* --- PLAYLIST DETAIL VIEW --- */
 .playlist-header-view {
     display: flex; flex-direction: column; align-items: center; text-align: center;
     margin-bottom: 30px; padding-top: 10px;
@@ -276,7 +215,7 @@ body {
 }
 .play-all-btn:active { transform: scale(0.95); }
 
-/* --- UPDATE: MODAL STYLES --- */
+/* --- MODAL STYLES --- */
 .modal-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(0,0,0,0.8); z-index: 300; display: none;
@@ -290,10 +229,21 @@ body {
     display: flex; flex-direction: column; gap: 15px;
 }
 .modal-box h3 { font-size: 18px; font-weight: 700; text-align: center; margin-bottom: 10px; }
-.modal-box input {
+.modal-box input[type="text"] {
     background: #3e3e3e; border: 1px solid #555; padding: 12px; border-radius: 6px;
-    color: white; outline: none; font-size: 14px;
+    color: white; outline: none; font-size: 14px; width: 100%;
 }
+
+/* File Upload Style (NEW) */
+.file-upload-wrapper {
+    display: flex; align-items: center; gap: 10px;
+}
+.file-label {
+    background: #3e3e3e; border: 1px solid #555; padding: 10px 15px; border-radius: 6px;
+    cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 8px;
+}
+.file-label:hover { background: #555; }
+
 .modal-btns { display: flex; gap: 10px; margin-top: 10px; }
 .modal-btns button { flex: 1; padding: 12px; border-radius: 30px; border: none; font-weight: 600; cursor: pointer; }
 .btn-cancel { background: transparent; color: white; border: 1px solid #555 !important; }
