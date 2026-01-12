@@ -22,36 +22,32 @@ window.onload = () => {
     loadLibrary();
 };
 
-// --- NAVIGATION (FIXED GHOSTING/SHADOW ISSUE) ---
+// --- NAVIGATION (FIXED: NO BLINK/KEDIPAN) ---
 function switchTab(tabName) {
-    // 1. FIX: Paksa sembunyikan SEMUA view agar tidak menumpuk (hapus bayangan)
+    // 1. Tentukan target ID
+    const targetId = tabName === 'playlist-detail' ? 'view-playlist-detail' : `view-${tabName}`;
+    const targetView = document.getElementById(targetId);
+
+    // 2. Hide semua view KECUALI target (agar tidak numpuk tapi langsung ganti)
     document.querySelectorAll('.page-view').forEach(el => {
-        el.classList.remove('active');
-        el.style.display = 'none'; // Penting: Display none agar benar-benar hilang
+        if(el.id !== targetId) {
+            el.style.display = 'none';
+            el.classList.remove('active');
+        }
     });
 
+    // 3. Langsung tampilkan target tanpa setTimeout (INSTAN)
+    if(targetView) {
+        targetView.style.display = 'block';
+        targetView.classList.add('active');
+    }
+    
+    // Update icon navbar aktif
     document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
     
-    // 2. Selalu sembunyikan detail playlist jika pindah tab utama
-    const detailView = document.getElementById('view-playlist-detail');
-    if(detailView) {
-        detailView.classList.remove('active');
-        detailView.style.display = 'none';
-    }
-
-    // 3. Tampilkan tab yang diminta
-    if(tabName !== 'playlist-detail') {
-        const targetView = document.getElementById(`view-${tabName}`);
-        if(targetView) {
-            targetView.style.display = 'block';
-            setTimeout(() => targetView.classList.add('active'), 10);
-        }
-        
-        // Update icon navbar aktif
-        const navIndex = ['home', 'search', 'library'].indexOf(tabName);
-        if(navIndex !== -1 && document.querySelectorAll('.nav-item')[navIndex]) {
-            document.querySelectorAll('.nav-item')[navIndex].classList.add('active');
-        }
+    const navIndex = ['home', 'search', 'library'].indexOf(tabName);
+    if(navIndex !== -1 && document.querySelectorAll('.nav-item')[navIndex]) {
+        document.querySelectorAll('.nav-item')[navIndex].classList.add('active');
     }
 }
 
@@ -419,16 +415,20 @@ function deletePlaylist(id, e) {
 }
 
 function openPlaylistDetail(id, name, img) {
-    // FIX: Sembunyikan SEMUA view lain terlebih dahulu agar tidak ada bayangan
+    const detailView = document.getElementById('view-playlist-detail');
+    const targetId = 'view-playlist-detail';
+
+    // 1. Hide view lain
     document.querySelectorAll('.page-view').forEach(el => {
-        el.classList.remove('active');
-        el.style.display = 'none';
+        if(el.id !== targetId) {
+            el.style.display = 'none';
+            el.classList.remove('active');
+        }
     });
 
-    // Baru tampilkan view detail
-    const detailView = document.getElementById('view-playlist-detail');
+    // 2. Langsung tampilkan detail
     detailView.style.display = 'block';
-    setTimeout(() => detailView.classList.add('active'), 10);
+    detailView.classList.add('active');
 
     document.getElementById('pl-detail-name').innerText = name;
     document.getElementById('pl-detail-img').src = img;
