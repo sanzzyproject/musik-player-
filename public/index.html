@@ -11,7 +11,7 @@
 
     <div id="view-home" class="page-view active">
         
-        <div class="home-header">
+        <div class="home-heder">
             <div class="header-text">
                 <span class="greeting">DEV SANN404</span>
                 <h2 class="username">MUSIC HUB</h2>
@@ -119,9 +119,6 @@
                 <p>Coldplay</p>
             </div>
         </div>
-        
-      
-
     </div>
 
     <div id="view-search" class="page-view">
@@ -152,7 +149,7 @@
                  <div class="user-avatar">S</div>
                 <h2>Your Library</h2>
             </div>
-            <i class="fa-solid fa-plus add-lib"></i>
+            <i class="fa-solid fa-plus add-lib" onclick="openCreateModal()"></i>
         </div>
         <div class="filter-chips">
             <span class="chip active">Playlists</span>
@@ -161,6 +158,22 @@
         </div>
         <div id="library-list" class="result-list">
         </div>
+    </div>
+
+    <div id="view-playlist-detail" class="page-view">
+        <div class="playlist-header-view">
+            <i class="fa-solid fa-arrow-left" onclick="switchTab('library')"></i>
+            <img id="pl-detail-img" src="" alt="">
+            <div class="pl-detail-info">
+                <span class="tag">PLAYLIST</span>
+                <h1 id="pl-detail-name">Nama Playlist</h1>
+                <p id="pl-detail-count">0 Songs</p>
+                <button class="play-all-btn" onclick="playPlaylistAll()">
+                    <i class="fa-solid fa-play"></i> PUTAR
+                </button>
+            </div>
+        </div>
+        <div id="playlist-songs-list" class="result-list"></div>
     </div>
 
     <div class="bottom-player" id="bottom-player">
@@ -198,7 +211,7 @@
         <div class="full-header">
             <i class="fa-solid fa-chevron-down" onclick="closeFullPlayer()"></i>
             <span>Now Playing</span>
-            <i class="fa-solid fa-ellipsis"></i>
+            <i class="fa-solid fa-list-ul" onclick="openAddToPlaylistModal()"></i>
         </div>
         <img id="full-cover" src="" alt="">
         <div class="full-info">
@@ -225,6 +238,26 @@
             <i class="fa-solid fa-repeat" style="font-size: 20px; color: var(--gray);"></i>
         </div>
         <div class="dev-credit">Developer: SANN404 FORUM</div>
+    </div>
+
+    <div id="modal-create-playlist" class="modal-overlay">
+        <div class="modal-box">
+            <h3>Buat Playlist Baru</h3>
+            <input type="text" id="new-pl-name" placeholder="Nama Playlist">
+            <input type="text" id="new-pl-img" placeholder="Link Foto (Opsional)">
+            <div class="modal-btns">
+                <button onclick="closeModal('modal-create-playlist')" class="btn-cancel">Batal</button>
+                <button onclick="saveNewPlaylist()" class="btn-save">Buat</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-add-to-pl" class="modal-overlay">
+        <div class="modal-box">
+            <h3>Simpan ke Playlist</h3>
+            <div id="list-pl-for-add" class="pl-select-list"></div>
+            <button onclick="closeModal('modal-add-to-pl')" class="btn-cancel full-width">Tutup</button>
+        </div>
     </div>
 
     <audio id="audio-source"></audio>
