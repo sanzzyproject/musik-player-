@@ -6,6 +6,8 @@
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Status](https://img.shields.io/badge/Status-Active-success)
 
+(https://cdn.odzre.my.id/us0.jpeg)
+
 ## 🛠️ Technology Stack
 
 This project is built using the following technologies:
