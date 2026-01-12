@@ -10,7 +10,6 @@
 <body>
 
     <div id="view-home" class="page-view active">
-        
         <div class="home-heder">
             <div class="header-text">
                 <span class="greeting">DEV SANN404</span>
@@ -95,7 +94,7 @@
                 <span class="subtext">Anime & Pop</span>
             </div>
         </div>
-
+        
         <div class="section-title">Your Favorite Artists</div>
         <div class="card-scroll artist-scroll">
             <div class="artist-circle" onclick="quickSearch('Tulus')">
@@ -219,7 +218,7 @@
                 <h2 id="full-title">Song Title</h2>
                 <p id="full-artist">Artist</p>
             </div>
-            <i class="fa-regular fa-heart" id="like-btn" onclick="toggleLibrary()"></i>
+            <i class="fa-regular fa-heart" id="like-btn" onclick="openLikeOptionModal()"></i>
         </div>
         <div class="full-progress">
             <input type="range" id="main-slider" value="0" max="100">
@@ -244,7 +243,11 @@
         <div class="modal-box">
             <h3>Buat Playlist Baru</h3>
             <input type="text" id="new-pl-name" placeholder="Nama Playlist">
-            <input type="text" id="new-pl-img" placeholder="Link Foto (Opsional)">
+            <div class="file-upload-wrapper">
+                <label for="new-pl-file" class="file-label"><i class="fa-solid fa-camera"></i> Pilih Foto Cover</label>
+                <input type="file" id="new-pl-file" accept="image/*" style="display: none;">
+                <span id="file-name-display" style="font-size: 11px; color: #aaa; margin-left: 10px;">Belum ada foto</span>
+            </div>
             <div class="modal-btns">
                 <button onclick="closeModal('modal-create-playlist')" class="btn-cancel">Batal</button>
                 <button onclick="saveNewPlaylist()" class="btn-save">Buat</button>
@@ -257,6 +260,15 @@
             <h3>Simpan ke Playlist</h3>
             <div id="list-pl-for-add" class="pl-select-list"></div>
             <button onclick="closeModal('modal-add-to-pl')" class="btn-cancel full-width">Tutup</button>
+        </div>
+    </div>
+
+    <div id="modal-like-options" class="modal-overlay">
+        <div class="modal-box">
+            <h3>Simpan Lagu Ke...</h3>
+            <div id="like-options-list" class="pl-select-list">
+                </div>
+            <button onclick="closeModal('modal-like-options')" class="btn-cancel full-width">Batal</button>
         </div>
     </div>
 
