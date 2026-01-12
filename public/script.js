@@ -14,27 +14,33 @@ const mainSlider = document.getElementById('main-slider');
 // State
 let isPlaying = false;
 let currentMeta = null;
-let currentPlaylistSongs = []; // State untuk playlist yang sedang aktif
+let currentPlaylistSongs = []; 
+let isDraggingSlider = false; // FIX: Variabel untuk mencegah slider bug
 
 // --- INITIALIZATION ---
 window.onload = () => {
     loadLibrary();
 };
 
-// --- NAVIGATION ---
+// --- NAVIGATION (FIXED STUCK ISSUE) ---
 function switchTab(tabName) {
+    // 1. Sembunyikan semua page view standar
     document.querySelectorAll('.page-view').forEach(el => el.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
     
-    // Khusus jika keluar dari playlist detail
-    if (tabName !== 'playlist-detail') {
-        document.getElementById('view-playlist-detail').classList.remove('active');
-    }
+    // 2. Penting: Selalu sembunyikan detail playlist jika pindah tab utama
+    document.getElementById('view-playlist-detail').classList.remove('active');
+    document.getElementById('view-playlist-detail').style.display = 'none';
 
-    if(tabName === 'playlist-detail') {
-        // Skip default nav logic
-    } else {
-        document.getElementById(`view-${tabName}`).classList.add('active');
+    // 3. Tampilkan tab yang diminta
+    if(tabName !== 'playlist-detail') {
+        const targetView = document.getElementById(`view-${tabName}`);
+        if(targetView) {
+            targetView.style.display = 'block';
+            setTimeout(() => targetView.classList.add('active'), 10);
+        }
+        
+        // Update icon navbar aktif
         const navIndex = ['home', 'search', 'library'].indexOf(tabName);
         if(navIndex !== -1) document.querySelectorAll('.nav-item')[navIndex].classList.add('active');
     }
@@ -78,7 +84,6 @@ async function performSearch(query) {
                     <i class="fa-solid fa-play" style="color:var(--green)"></i>
                 `;
                 item.onclick = () => {
-                    // Reset current playlist state jika main dari search
                     currentPlaylistSongs = []; 
                     playMusic({
                         url: song.url,
@@ -130,10 +135,16 @@ function updateUI(meta) {
     document.getElementById('full-title').innerText = meta.title;
     document.getElementById('full-artist').innerText = meta.artist;
 
-    // Update status like icon
+    // Cek status Like (hanya visual awal)
+    checkLikeStatus();
+}
+
+function checkLikeStatus() {
+    if(!currentMeta) return;
     const lib = JSON.parse(localStorage.getItem('sann_library') || '[]');
-    const isLiked = lib.find(s => s.url === meta.url);
+    const isLiked = lib.find(s => s.url === currentMeta.url);
     const likeBtn = document.getElementById('like-btn');
+    
     if(isLiked) {
         likeBtn.className = 'fa-solid fa-heart';
         likeBtn.style.color = 'var(--green)';
@@ -187,48 +198,59 @@ audio.addEventListener('playing', () => {
     updatePlayIcons();
 });
 
+// --- FIX: SEEKING & PROGRESS BAR LOGIC ---
 audio.addEventListener('timeupdate', () => {
     if (!audio.duration) return;
-    const pct = (audio.currentTime / audio.duration) * 100;
     
-    miniProgress.style.width = pct + '%';
-    mainSlider.value = pct;
-    
-    document.getElementById('curr-time').innerText = formatTime(audio.currentTime);
+    // Hanya update slider jika user TIDAK sedang drag slider
+    if (!isDraggingSlider) {
+        const pct = (audio.currentTime / audio.duration) * 100;
+        miniProgress.style.width = pct + '%';
+        mainSlider.value = pct;
+        document.getElementById('curr-time').innerText = formatTime(audio.currentTime);
+    }
     document.getElementById('total-time').innerText = formatTime(audio.duration);
 });
 
-// --- UPDATE: AUTO PLAY FEATURE (THEMATIC/SETEMA) ---
+// Event saat slider digeser (sedang drag)
+mainSlider.addEventListener('input', (e) => {
+    isDraggingSlider = true;
+    // Update visual waktu secara real-time saat drag
+    const val = e.target.value;
+    const time = (val / 100) * audio.duration;
+    document.getElementById('curr-time').innerText = formatTime(time);
+});
+
+// Event saat slider dilepas (change value final)
+mainSlider.addEventListener('change', (e) => {
+    const val = e.target.value;
+    const time = (val / 100) * audio.duration;
+    audio.currentTime = time;
+    isDraggingSlider = false; // Kembalikan flag agar timeupdate jalan lagi
+});
+
 audio.addEventListener('ended', async () => {
     if(!currentMeta) return;
 
-    // 1. Cek: Apakah user sedang memutar dari Playlist?
+    // Auto Play Logic
     const currentIndex = currentPlaylistSongs.findIndex(s => s.url === currentMeta.url);
     if (currentIndex !== -1 && currentIndex < currentPlaylistSongs.length - 1) {
-        // Ada lagu berikutnya di playlist
         playMusic(currentPlaylistSongs[currentIndex + 1]);
         return;
     }
 
-    // 2. Jika bukan playlist (atau playlist habis), Cari lagu SETEMA (Artis Sama)
     document.getElementById('mini-title').innerText = "Mencari lagu selanjutnya...";
     
     try {
-        // Cari lagu berdasarkan Artis
         const res = await fetch(`/api/index?url=${encodeURIComponent(currentMeta.artist)}&mode=search`);
         const data = await res.json();
 
         if (data.songs && data.songs.length > 0) {
-            // Filter: Jangan putar lagu yang barusan selesai
             const suggestions = data.songs.filter(s => s.url !== currentMeta.url);
             
             if (suggestions.length > 0) {
-                // Ambil hasil pertama yang relevan
                 const nextSong = suggestions[0];
-                
-                // Set state playlist kosong agar loop search berlanjut
                 currentPlaylistSongs = []; 
-
                 playMusic({
                     url: nextSong.url,
                     title: nextSong.title,
@@ -240,50 +262,73 @@ audio.addEventListener('ended', async () => {
             }
         }
     } catch (e) {
-        console.error("Auto-play error:", e);
         isPlaying = false; updatePlayIcons();
     }
 });
 
-mainSlider.addEventListener('input', (e) => {
-    const time = (e.target.value / 100) * audio.duration;
-    audio.currentTime = time;
-});
-
 function formatTime(s) {
+    if(isNaN(s)) return "0:00";
     const min = Math.floor(s / 60);
     const sec = Math.floor(s % 60);
     return `${min}:${sec < 10 ? '0'+sec : sec}`;
 }
 
-// --- UPDATE: LIBRARY & PLAYLIST MANAGEMENT ---
+// --- LIBRARY & PLAYLIST MANAGEMENT ---
 
-// Liked Songs Logic (Simpan ke Favorit)
-function toggleLibrary() {
+// FIX: New Like Logic (Pilihan Playlist)
+function openLikeOptionModal() {
     if(!currentMeta) return;
     
+    document.getElementById('modal-like-options').classList.add('active');
+    const listDiv = document.getElementById('like-options-list');
+    listDiv.innerHTML = '';
+
+    // Opsi 1: Liked Songs (Default)
+    const likedItem = document.createElement('div');
+    likedItem.className = 'pl-select-item';
+    likedItem.innerHTML = `<div style="width:40px;height:40px;background:var(--green);display:flex;align-items:center;justify-content:center;border-radius:4px;"><i class="fa-solid fa-heart" style="color:white"></i></div><span>Liked Songs</span>`;
+    likedItem.onclick = () => {
+        toggleLikedSongs();
+        closeModal('modal-like-options');
+    };
+    listDiv.appendChild(likedItem);
+
+    // Opsi 2: Custom Playlists
+    const playlists = JSON.parse(localStorage.getItem('sann_playlists') || '[]');
+    playlists.forEach(pl => {
+        const item = document.createElement('div');
+        item.className = 'pl-select-item';
+        item.innerHTML = `<img src="${pl.image}"><span>${pl.name}</span>`;
+        item.onclick = () => {
+            addSongToPlaylist(pl.id);
+            closeModal('modal-like-options');
+        };
+        listDiv.appendChild(item);
+    });
+}
+
+function toggleLikedSongs() {
     let lib = JSON.parse(localStorage.getItem('sann_library') || '[]');
     const exists = lib.find(s => s.url === currentMeta.url);
     
     if(!exists) {
         lib.unshift(currentMeta); 
-        document.getElementById('like-btn').className = 'fa-solid fa-heart';
-        document.getElementById('like-btn').style.color = 'var(--green)';
+        alert("Ditambahkan ke Liked Songs");
     } else {
         lib = lib.filter(s => s.url !== currentMeta.url);
-        document.getElementById('like-btn').className = 'fa-regular fa-heart';
-        document.getElementById('like-btn').style.color = 'white';
+        alert("Dihapus dari Liked Songs");
     }
     
     localStorage.setItem('sann_library', JSON.stringify(lib));
-    loadLibrary(); // Refresh view jika sedang di library
+    checkLikeStatus();
+    loadLibrary();
 }
 
-// Render Library Utama (Liked Songs + Custom Playlist)
+// Render Library
 function loadLibrary() {
     libraryList.innerHTML = '';
     
-    // 1. Render Folder "Liked Songs"
+    // Folder Liked Songs
     const liked = JSON.parse(localStorage.getItem('sann_library') || '[]');
     const likedDiv = document.createElement('div');
     likedDiv.className = 'result-item';
@@ -298,7 +343,7 @@ function loadLibrary() {
     likedDiv.onclick = () => openPlaylistDetail('liked', 'Liked Songs', 'https://cdn.odzre.my.id/rri.jpg');
     libraryList.appendChild(likedDiv);
 
-    // 2. Render Custom Playlists
+    // Custom Playlists
     const playlists = JSON.parse(localStorage.getItem('sann_playlists') || '[]');
     playlists.forEach(pl => {
         const item = document.createElement('div');
@@ -324,23 +369,45 @@ function loadLibrary() {
 function openCreateModal() { document.getElementById('modal-create-playlist').classList.add('active'); }
 function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
-// Buat Playlist Baru
+// Display nama file saat upload foto
+document.getElementById('new-pl-file').addEventListener('change', function(e) {
+    const fileName = e.target.files[0] ? e.target.files[0].name : "Belum ada foto";
+    document.getElementById('file-name-display').innerText = fileName;
+});
+
+// FIX: Buat Playlist dengan File Upload Internal (Base64)
 function saveNewPlaylist() {
     const name = document.getElementById('new-pl-name').value;
-    let img = document.getElementById('new-pl-img').value;
+    const fileInput = document.getElementById('new-pl-file');
+    const file = fileInput.files[0];
     
     if(!name) return alert("Nama playlist wajib diisi!");
-    if(!img) img = "https://cdn.odzre.my.id/77c.jpg"; // Default image
 
-    const newPl = { id: Date.now(), name: name, image: img, songs: [] };
-    const playlists = JSON.parse(localStorage.getItem('sann_playlists') || '[]');
-    playlists.push(newPl);
-    localStorage.setItem('sann_playlists', JSON.stringify(playlists));
-    
-    closeModal('modal-create-playlist');
-    document.getElementById('new-pl-name').value = '';
-    document.getElementById('new-pl-img').value = '';
-    loadLibrary();
+    // Helper untuk menyimpan playlist
+    const save = (imgSrc) => {
+        const newPl = { id: Date.now(), name: name, image: imgSrc, songs: [] };
+        const playlists = JSON.parse(localStorage.getItem('sann_playlists') || '[]');
+        playlists.push(newPl);
+        localStorage.setItem('sann_playlists', JSON.stringify(playlists));
+        
+        closeModal('modal-create-playlist');
+        document.getElementById('new-pl-name').value = '';
+        fileInput.value = ''; // Reset file
+        document.getElementById('file-name-display').innerText = "Belum ada foto";
+        loadLibrary();
+    };
+
+    if (file) {
+        // Convert Image to Base64
+        const reader = new FileReader();
+        reader.onloadend = function() {
+            save(reader.result); // Simpan string base64
+        }
+        reader.readAsDataURL(file);
+    } else {
+        // Gunakan default image jika tidak ada upload
+        save("https://cdn.odzre.my.id/77c.jpg");
+    }
 }
 
 function deletePlaylist(id, e) {
@@ -352,22 +419,20 @@ function deletePlaylist(id, e) {
     loadLibrary();
 }
 
-// Buka Isi Playlist
 function openPlaylistDetail(id, name, img) {
-    // Sembunyikan library, tampilkan detail
+    // FIX: Navigasi manual yang aman
     document.getElementById('view-library').style.display = 'none';
     const detailView = document.getElementById('view-playlist-detail');
     detailView.style.display = 'block';
-    detailView.classList.add('active');
+    // Gunakan timeout kecil agar transisi animasi bekerja
+    setTimeout(() => detailView.classList.add('active'), 10);
 
-    // Set Header Info
     document.getElementById('pl-detail-name').innerText = name;
     document.getElementById('pl-detail-img').src = img;
 
     const listContainer = document.getElementById('playlist-songs-list');
     listContainer.innerHTML = '';
 
-    // Load Songs
     let songs = [];
     if(id === 'liked') {
         songs = JSON.parse(localStorage.getItem('sann_library') || '[]');
@@ -377,7 +442,6 @@ function openPlaylistDetail(id, name, img) {
         songs = pl ? pl.songs : [];
     }
 
-    // Set Global State untuk Play Queue
     currentPlaylistSongs = songs; 
     document.getElementById('pl-detail-count').innerText = `${songs.length} Songs`;
 
@@ -399,11 +463,6 @@ function openPlaylistDetail(id, name, img) {
             listContainer.appendChild(item);
         });
     }
-
-    // Ubah fungsi switchTab sementara agar tombol back bekerja
-    const oldSwitchTab = window.switchTab; 
-    // Kita handle manual tombol back di HTML (onclick="switchTab('library')")
-    // Di fungsi switchTab utama sudah ditangani logika hide/show
 }
 
 function playPlaylistAll() {
@@ -414,7 +473,6 @@ function playPlaylistAll() {
     }
 }
 
-// Simpan Lagu ke Playlist (Dari Full Player)
 function openAddToPlaylistModal() {
     if(!currentMeta) return alert("Putar lagu dulu!");
     document.getElementById('modal-add-to-pl').classList.add('active');
