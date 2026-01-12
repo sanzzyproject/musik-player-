@@ -15,22 +15,29 @@ const mainSlider = document.getElementById('main-slider');
 let isPlaying = false;
 let currentMeta = null;
 let currentPlaylistSongs = []; 
-let isDraggingSlider = false; // FIX: Variabel untuk mencegah slider bug
+let isDraggingSlider = false;
 
 // --- INITIALIZATION ---
 window.onload = () => {
     loadLibrary();
 };
 
-// --- NAVIGATION (FIXED STUCK ISSUE) ---
+// --- NAVIGATION (FIXED GHOSTING/SHADOW ISSUE) ---
 function switchTab(tabName) {
-    // 1. Sembunyikan semua page view standar
-    document.querySelectorAll('.page-view').forEach(el => el.classList.remove('active'));
+    // 1. FIX: Paksa sembunyikan SEMUA view agar tidak menumpuk (hapus bayangan)
+    document.querySelectorAll('.page-view').forEach(el => {
+        el.classList.remove('active');
+        el.style.display = 'none'; // Penting: Display none agar benar-benar hilang
+    });
+
     document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
     
-    // 2. Penting: Selalu sembunyikan detail playlist jika pindah tab utama
-    document.getElementById('view-playlist-detail').classList.remove('active');
-    document.getElementById('view-playlist-detail').style.display = 'none';
+    // 2. Selalu sembunyikan detail playlist jika pindah tab utama
+    const detailView = document.getElementById('view-playlist-detail');
+    if(detailView) {
+        detailView.classList.remove('active');
+        detailView.style.display = 'none';
+    }
 
     // 3. Tampilkan tab yang diminta
     if(tabName !== 'playlist-detail') {
@@ -42,7 +49,9 @@ function switchTab(tabName) {
         
         // Update icon navbar aktif
         const navIndex = ['home', 'search', 'library'].indexOf(tabName);
-        if(navIndex !== -1) document.querySelectorAll('.nav-item')[navIndex].classList.add('active');
+        if(navIndex !== -1 && document.querySelectorAll('.nav-item')[navIndex]) {
+            document.querySelectorAll('.nav-item')[navIndex].classList.add('active');
+        }
     }
 }
 
@@ -198,11 +207,10 @@ audio.addEventListener('playing', () => {
     updatePlayIcons();
 });
 
-// --- FIX: SEEKING & PROGRESS BAR LOGIC ---
+// --- SEEKING & PROGRESS BAR LOGIC ---
 audio.addEventListener('timeupdate', () => {
     if (!audio.duration) return;
     
-    // Hanya update slider jika user TIDAK sedang drag slider
     if (!isDraggingSlider) {
         const pct = (audio.currentTime / audio.duration) * 100;
         miniProgress.style.width = pct + '%';
@@ -212,21 +220,18 @@ audio.addEventListener('timeupdate', () => {
     document.getElementById('total-time').innerText = formatTime(audio.duration);
 });
 
-// Event saat slider digeser (sedang drag)
 mainSlider.addEventListener('input', (e) => {
     isDraggingSlider = true;
-    // Update visual waktu secara real-time saat drag
     const val = e.target.value;
     const time = (val / 100) * audio.duration;
     document.getElementById('curr-time').innerText = formatTime(time);
 });
 
-// Event saat slider dilepas (change value final)
 mainSlider.addEventListener('change', (e) => {
     const val = e.target.value;
     const time = (val / 100) * audio.duration;
     audio.currentTime = time;
-    isDraggingSlider = false; // Kembalikan flag agar timeupdate jalan lagi
+    isDraggingSlider = false;
 });
 
 audio.addEventListener('ended', async () => {
@@ -275,7 +280,6 @@ function formatTime(s) {
 
 // --- LIBRARY & PLAYLIST MANAGEMENT ---
 
-// FIX: New Like Logic (Pilihan Playlist)
 function openLikeOptionModal() {
     if(!currentMeta) return;
     
@@ -369,13 +373,11 @@ function loadLibrary() {
 function openCreateModal() { document.getElementById('modal-create-playlist').classList.add('active'); }
 function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
-// Display nama file saat upload foto
 document.getElementById('new-pl-file').addEventListener('change', function(e) {
     const fileName = e.target.files[0] ? e.target.files[0].name : "Belum ada foto";
     document.getElementById('file-name-display').innerText = fileName;
 });
 
-// FIX: Buat Playlist dengan File Upload Internal (Base64)
 function saveNewPlaylist() {
     const name = document.getElementById('new-pl-name').value;
     const fileInput = document.getElementById('new-pl-file');
@@ -383,7 +385,6 @@ function saveNewPlaylist() {
     
     if(!name) return alert("Nama playlist wajib diisi!");
 
-    // Helper untuk menyimpan playlist
     const save = (imgSrc) => {
         const newPl = { id: Date.now(), name: name, image: imgSrc, songs: [] };
         const playlists = JSON.parse(localStorage.getItem('sann_playlists') || '[]');
@@ -392,20 +393,18 @@ function saveNewPlaylist() {
         
         closeModal('modal-create-playlist');
         document.getElementById('new-pl-name').value = '';
-        fileInput.value = ''; // Reset file
+        fileInput.value = '';
         document.getElementById('file-name-display').innerText = "Belum ada foto";
         loadLibrary();
     };
 
     if (file) {
-        // Convert Image to Base64
         const reader = new FileReader();
         reader.onloadend = function() {
-            save(reader.result); // Simpan string base64
+            save(reader.result);
         }
         reader.readAsDataURL(file);
     } else {
-        // Gunakan default image jika tidak ada upload
         save("https://cdn.odzre.my.id/77c.jpg");
     }
 }
@@ -420,11 +419,15 @@ function deletePlaylist(id, e) {
 }
 
 function openPlaylistDetail(id, name, img) {
-    // FIX: Navigasi manual yang aman
-    document.getElementById('view-library').style.display = 'none';
+    // FIX: Sembunyikan SEMUA view lain terlebih dahulu agar tidak ada bayangan
+    document.querySelectorAll('.page-view').forEach(el => {
+        el.classList.remove('active');
+        el.style.display = 'none';
+    });
+
+    // Baru tampilkan view detail
     const detailView = document.getElementById('view-playlist-detail');
     detailView.style.display = 'block';
-    // Gunakan timeout kecil agar transisi animasi bekerja
     setTimeout(() => detailView.classList.add('active'), 10);
 
     document.getElementById('pl-detail-name').innerText = name;
