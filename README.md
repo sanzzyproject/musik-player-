@@ -6,9 +6,6 @@
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Status](https://img.shields.io/badge/Status-Active-success)
 
-## 📸 Preview
-![Web Preview](https://cdn.odzre.my.id/us0.jpeg)
-
 ## 🛠️ Technology Stack
 
 This project is built using the following technologies:
@@ -18,6 +15,9 @@ This project is built using the following technologies:
 - **HTML5** — Application structure
 - **CSS3** — User interface styling
 - **Vercel Serverless Functions** — Backend & deployment platform
+
+## 📸 Preview
+![Web Preview](https://cdn.odzre.my.id/us0.jpeg)
 
 ---
 
