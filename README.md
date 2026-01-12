@@ -6,7 +6,8 @@
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Status](https://img.shields.io/badge/Status-Active-success)
 
-(https://cdn.odzre.my.id/us0.jpeg)
+## 📸 Preview
+![Web Preview](https://cdn.odzre.my.id/us0.jpeg)
 
 ## 🛠️ Technology Stack
 
