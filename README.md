@@ -17,7 +17,7 @@ Proyek ini bersifat **open-source** dan dirilis di bawah **MIT License**, yang m
 
 ## 🛠️ Technology Stack
 
-This project is built using the following technologies:
+Proyek ini dibangun menggunakan teknologi berikut:
 
 - **Node.js** — Lingkungan runtime untuk logika backend
 - **Vanilla JavaScript** — Logika aplikasi inti
