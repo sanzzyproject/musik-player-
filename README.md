@@ -51,9 +51,23 @@ Music Data / Streaming Logic
 
 ## 📄 License & Attribution
 
-Proyek ini bersifat open-source dan gratis untuk digunakan di bawah Lisensi MIT.
-**Atribusi wajib**.
+Proyek ini adalah **perangkat lunak open-source** yang dirilis di bawah **MIT License**.
 
-Setiap penggunaan, modifikasi, atau redistribusi harus secara jelas menyebutkan:
-- Nama proyek asli
-- Otorisasi asli
+Setiap orang diizinkan untuk menggunakan, menyalin, memodifikasi, dan mendistribusikan proyek ini, **dengan syarat atribusi wajib dan tidak boleh dihapus**.
+
+### Atribusi (Wajib)
+
+Setiap penggunaan atau redistribusi **harus mencantumkan secara jelas**:
+- Nama proyek asli  
+- Nama pembuat / author asli  
+- Pernyataan penggunaan **MIT License** atau salinan lisensi
+
+Atribusi dapat ditempatkan pada `README.md`, dokumentasi, header kode, atau halaman *About/Credits*.
+
+### Redistribusi
+
+Redistribusi dalam bentuk apa pun **wajib menyertakan** lisensi ini dan informasi atribusi.
+
+### Penyangkalan
+
+Perangkat lunak ini disediakan **"APA ADANYA" (AS IS)** tanpa jaminan apa pun. Penulis tidak bertanggung jawab atas kerusakan atau kerugian yang timbul dari penggunaan proyek ini.
