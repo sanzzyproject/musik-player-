@@ -12,6 +12,9 @@
 
 Proyek ini bersifat **open-source** dan dirilis di bawah **MIT License**, yang mengizinkan penggunaan, modifikasi, dan distribusi ulang dengan tetap mencantumkan lisensi dan hak cipta asli.
 
+## 📸 Preview
+![Web Preview](https://cdn.odzre.my.id/us0.jpeg)
+
 ## 🛠️ Technology Stack
 
 This project is built using the following technologies:
@@ -21,9 +24,6 @@ This project is built using the following technologies:
 - **HTML5** — Application structure
 - **CSS3** — User interface styling
 - **Vercel Serverless Functions** — Backend & deployment platform
-
-## 📸 Preview
-![Web Preview](https://cdn.odzre.my.id/us0.jpeg)
 
 ---
 
