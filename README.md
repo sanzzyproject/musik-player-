@@ -19,11 +19,11 @@ Proyek ini bersifat **open-source** dan dirilis di bawah **MIT License**, yang m
 
 This project is built using the following technologies:
 
-- **Node.js** — Runtime environment for backend logic
-- **Vanilla JavaScript** — Core application logic
-- **HTML5** — Application structure
-- **CSS3** — User interface styling
-- **Vercel Serverless Functions** — Backend & deployment platform
+- **Node.js** — Lingkungan runtime untuk logika backend
+- **Vanilla JavaScript** — Logika aplikasi inti
+- **HTML5** — Struktur aplikasi
+- **CSS3** — Penataan gaya antarmuka pengguna
+- **Vercel Serverless Function**
 
 ---
 
