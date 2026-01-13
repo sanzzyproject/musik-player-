@@ -23,14 +23,20 @@ This project is built using the following technologies:
 
 ## 📁 Project Structure
 ```text
-api/index.js        → Backend / API music player  
-public/index.html   → Tampilan utama aplikasi  
-public/script.js    → Logic pemutar musik  
-public/style.css    → Styling UI  
-package.json        → Konfigurasi project & dependencies  
-vercel.json         → Konfigurasi deployment Vercel  
-README.md           → Dokumentasi project
+.
+├── api/
+│   └── index.js          # Backend API untuk streaming & kontrol musik
+│
+├── public/
+│   ├── index.html        # Halaman utama (UI Music Player)
+│   ├── script.js         # Logic utama pemutar musik (play, pause, next, playlist)
+│   └── style.css         # Styling UI & layout aplikasi
+│
+├── package.json          # Konfigurasi project, scripts, dan dependencies
+├── vercel.json           # Konfigurasi deployment di Vercel
+├── README.md             # Dokumentasi utama project
 ```
+
 ## 📄 License & Attribution
 
 This project is open-source and free to use under the MIT License  
