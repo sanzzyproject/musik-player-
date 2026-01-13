@@ -8,9 +8,9 @@
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Status](https://img.shields.io/badge/Status-Active-success)
 
-**Web Music Player** adalah aplikasi pemutar musik berbasis web yang dibangun menggunakan **Node.js, JavaScript, HTML5, dan CSS3** dengan pendekatan **serverless architecture**. Aplikasi ini dapat dijalankan langsung melalui browser tanpa instalasi tambahan, sehingga ringan, cepat, dan mudah digunakan.
+**Web Music Player** adalah aplikasi pemutar musik berbasis web yang dibangun dengan **Node.js, JavaScript, HTML5, dan CSS3**, serta berjalan langsung di browser menggunakan arsitektur **serverless**.
 
-Proyek ini dirilis sebagai **open-source software** di bawah **MIT License**, yang mengizinkan siapa pun untuk menggunakan, menyalin, memodifikasi, menggabungkan, mempublikasikan, mendistribusikan, mensublisensikan, dan/atau menjual salinan perangkat lunak ini, dengan syarat mencantumkan pemberitahuan hak cipta dan lisensi asli.
+Proyek ini bersifat **open-source** dan dirilis di bawah **MIT License**, yang mengizinkan penggunaan, modifikasi, dan distribusi ulang dengan tetap mencantumkan lisensi dan hak cipta asli.
 
 ## 🛠️ Technology Stack
 
