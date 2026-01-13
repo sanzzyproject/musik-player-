@@ -24,17 +24,17 @@ This project is built using the following technologies:
 ## 📁 Project Structure
 ```text
 .
-├── api/
-│   └── index.js          # Backend API untuk streaming & kontrol musik
+├── api/                         # Serverless backend (Vercel Functions)
+│   └── index.js                 # Main API entry point (music service)
 │
-├── public/
-│   ├── index.html        # Halaman utama (UI Music Player)
-│   ├── script.js         # Logic utama pemutar musik (play, pause, next, playlist)
-│   └── style.css         # Styling UI & layout aplikasi
+├── public/                      # Frontend static assets
+│   ├── index.html               # Main application interface
+│   ├── script.js                # Core client-side logic (player & controls)
+│   └── style.css                # Global styles and UI layout
 │
-├── package.json          # Konfigurasi project, scripts, dan dependencies
-├── vercel.json           # Konfigurasi deployment di Vercel
-├── README.md             # Dokumentasi utama project
+├── package.json                 # Project configuration & dependencies
+├── vercel.json                  # Deployment & routing configuration (Vercel)
+└── README.md                    # Project documentation
 ```
 
 ## 📄 License & Attribution
