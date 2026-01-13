@@ -51,10 +51,9 @@ Music Data / Streaming Logic
 
 ## 📄 License & Attribution
 
-This project is open-source and free to use under the MIT License  
-**Attribution is required**.
+Proyek ini bersifat open-source dan gratis untuk digunakan di bawah Lisensi MIT.
+**Atribusi wajib**.
 
-Any use, modification, or redistribution must clearly mention:
-- Original project name
-- Original author
-- Link to the original repository
+Setiap penggunaan, modifikasi, atau redistribusi harus secara jelas menyebutkan:
+- Nama proyek asli
+- Otorisasi asli
