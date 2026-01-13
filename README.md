@@ -1,9 +1,3 @@
-## 🎵 Web Music Player
-
-**Web Music Player** adalah aplikasi pemutar musik berbasis web yang dibangun menggunakan **Node.js, JavaScript, HTML5, dan CSS3** dengan pendekatan **serverless architecture**. Aplikasi ini dapat dijalankan langsung melalui browser tanpa instalasi tambahan, sehingga ringan, cepat, dan mudah digunakan.
-
-Proyek ini dirilis sebagai **open-source software** di bawah **MIT License**, yang mengizinkan siapa pun untuk menggunakan, menyalin, memodifikasi, menggabungkan, mempublikasikan, mendistribusikan, mensublisensikan, dan/atau menjual salinan perangkat lunak ini, dengan syarat mencantumkan pemberitahuan hak cipta dan lisensi asli.
-
 ![Node.js](https://img.shields.io/badge/Node.js-18+-green?logo=node.js)
 ![JavaScript](https://img.shields.io/badge/JavaScript-Vanilla-yellow?logo=javascript)
 ![HTML5](https://img.shields.io/badge/HTML5-Markup-orange?logo=html5)
@@ -11,6 +5,12 @@ Proyek ini dirilis sebagai **open-source software** di bawah **MIT License**, ya
 ![Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?logo=vercel)
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Status](https://img.shields.io/badge/Status-Active-success)
+
+## 🎵 Web Music Player
+
+**Web Music Player** adalah aplikasi pemutar musik berbasis web yang dibangun menggunakan **Node.js, JavaScript, HTML5, dan CSS3** dengan pendekatan **serverless architecture**. Aplikasi ini dapat dijalankan langsung melalui browser tanpa instalasi tambahan, sehingga ringan, cepat, dan mudah digunakan.
+
+Proyek ini dirilis sebagai **open-source software** di bawah **MIT License**, yang mengizinkan siapa pun untuk menggunakan, menyalin, memodifikasi, menggabungkan, mempublikasikan, mendistribusikan, mensublisensikan, dan/atau menjual salinan perangkat lunak ini, dengan syarat mencantumkan pemberitahuan hak cipta dan lisensi asli.
 
 ## 🛠️ Technology Stack
 
