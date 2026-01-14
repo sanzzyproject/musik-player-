@@ -27,6 +27,15 @@ Proyek ini dibangun menggunakan teknologi berikut:
 
 ---
 
+## 📥 Clone Repository
+
+Gunakan perintah berikut untuk menyalin repository ke komputer lokal:
+
+```bash
+git clone https://github.com/sanzzyproject/musik-player-.git
+cd musik-player-
+```
+
 ## 📁 Project Structure
 ```text
 api/index.js        → Backend / API music player    
