@@ -12,7 +12,7 @@
 
 Proyek ini bersifat **open-source** dan dirilis di bawah **MIT License**, yang mengizinkan penggunaan, modifikasi, dan distribusi ulang dengan tetap mencantumkan lisensi dan hak cipta asli.
 
-## 🚀 Update Terbaru 2 Febuari 2026(Stability & High Traffic Improvement)
+## 🚀 Update Terbaru 2 Februari 2026
 
 Pada update ini, backend mengalami peningkatan besar di sisi **performansi, stabilitas, dan user experience** saat trafik meningkat.
 
