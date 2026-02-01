@@ -1,0 +1,24 @@
+# Node dependencies
+node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+*.log
+
+# Build / output
+dist/
+build/
+out/
+
+# IDE / editor
+.vscode/
+.idea/
+
+# OS temp files
+.DS_Store
+Thumbs.db
+
+# Vercel / cache
+.vercel/
+.cache/
