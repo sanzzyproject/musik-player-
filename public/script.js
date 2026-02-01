@@ -100,7 +100,7 @@ async function performSearch(query) {
                 searchResults.appendChild(item);
             });
         } else {
-            searchResults.innerHTML = '<div style="text-align:center; padding:20px;">Lagu tidak ditemukan.</div>';
+            searchResults.innerHTML = '<div style="text-align:center; padding:20px;">Server sedang penuh, silakan tunggu sebentar</div>';
         }
     } catch (e) {
         loadingDiv.style.display = 'none';
