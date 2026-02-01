@@ -20,14 +20,13 @@ Pada update ini, backend mengalami peningkatan besar di sisi **performansi, stab
 - Menambahkan timeout pada semua request ke provider
 - Mencegah request menggantung terlalu lama
 - Mengurangi error 504 / function hang
-
-```js
-timeout: 15000 // 15 detik
-```
 - Cache search metadata 5 menit, lebih cepat & ringan  
 - Soft limit 30 stream (warning), hard limit 50 stream (ditolak)  
 - Feedback server load ke frontend (header + JSON)  
-- Cleanup otomatis slot stream saat tab close/refresh  
+- Cleanup otomatis slot stream saat tab close/refresh
+```js
+timeout: 15000 // 15 detik
+```
 
 ## 📸 Preview
 ![Web Preview](https://cdn.odzre.my.id/us0.jpeg)
