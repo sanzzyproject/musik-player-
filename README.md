@@ -24,6 +24,10 @@ Pada update ini, backend mengalami peningkatan besar di sisi **performansi, stab
 ```js
 timeout: 15000 // 15 detik
 ```
+- Cache search metadata 5 menit, lebih cepat & ringan  
+- Soft limit 30 stream (warning), hard limit 50 stream (ditolak)  
+- Feedback server load ke frontend (header + JSON)  
+- Cleanup otomatis slot stream saat tab close/refresh  
 
 ## 📸 Preview
 ![Web Preview](https://cdn.odzre.my.id/us0.jpeg)
