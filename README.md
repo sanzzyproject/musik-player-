@@ -12,6 +12,19 @@
 
 Proyek ini bersifat **open-source** dan dirilis di bawah **MIT License**, yang mengizinkan penggunaan, modifikasi, dan distribusi ulang dengan tetap mencantumkan lisensi dan hak cipta asli.
 
+## 🚀 Update Terbaru 2 Febuari 2026(Stability & High Traffic Improvement)
+
+Pada update ini, backend mengalami peningkatan besar di sisi **performansi, stabilitas, dan user experience** saat trafik meningkat.
+
+### ✅ 1. Axios Timeout Protection
+- Menambahkan timeout pada semua request ke provider
+- Mencegah request menggantung terlalu lama
+- Mengurangi error 504 / function hang
+
+```js
+timeout: 15000 // 15 detik
+```
+
 ## 📸 Preview
 ![Web Preview](https://cdn.odzre.my.id/us0.jpeg)
 
